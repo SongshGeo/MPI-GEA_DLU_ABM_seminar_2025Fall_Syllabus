@@ -1,0 +1,195 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+
+% 设置字体为 Times New Roman
+\usepackage{times}
+\usepackage{csquotes}
+
+% 图形和表格支持
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+
+% CSV读取支持
+\usepackage[l3]{csvsimple}
+
+% 参考文献支持
+\usepackage[
+   style=authoryear,
+   backend=biber,
+   maxnames=20,
+   giveninits=true,
+   url=false,
+   doi=false,
+   isbn=false
+]{biblatex}
+
+% 设定页边距
+\usepackage[margin=2.5cm]{geometry}
+
+% 设定行距和间距
+\usepackage{setspace}
+\linespread{1.0}  % 减少行距
+
+% 调整标题间距
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{12pt plus 4pt minus 2pt}{8pt plus 2pt minus 1pt}
+\titlespacing*{\subsection}{0pt}{10pt plus 4pt minus 2pt}{6pt plus 2pt minus 1pt}
+\titlespacing*{\subsubsection}{0pt}{8pt plus 4pt minus 2pt}{4pt plus 2pt minus 1pt}
+
+% 调整列表间距
+\usepackage{enumitem}
+\setlist{itemsep=2pt,parsep=2pt,topsep=4pt,partopsep=2pt}
+\setlist[itemize]{leftmargin=1.5em,itemindent=0em,labelsep=0.5em}
+
+% 调整段落间距
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{0pt}
+
+% 超链接支持
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+% 微调排版
+\usepackage{microtype}
+
+% 加载配置文件
+\input{course_config}
+
+% 设置课程信息
+\title{\CourseTitle}
+\date{\CourseSemester}
+
+% 添加参考文献资源 - 支持多个文件
+% 直接加载多个BibTeX文件
+\addbibresource{refer/lecture1.bib}
+\addbibresource{course_bibliography.bib}
+\addbibresource{refer/additional_refs.bib}
+
+% 自定义命令
+\newcommand{\sectiontitle}[1]{\section*{#1}}
+\newcommand{\subsectiontitle}[1]{\subsection*{#1}}
+
+% 防止孤行和寡行
+\clubpenalty=10000
+\widowpenalty=10000
+
+\begin{document}
+
+% 标题页
+\begin{titlepage}
+\centering
+
+% 机构Logo
+\ifx\LogoPath\empty\else
+\vspace*{0.5cm}
+\includegraphics[width=0.8\textwidth]{\LogoPath}
+\vspace{1cm}
+\fi
+
+% 课程标题
+{\Huge \textbf{\CourseTitle}}
+\vspace{1cm}
+
+% 课程信息
+{\Large \CourseCode} \quad \textbf{\CourseSemester}
+\vspace{0.5cm}
+
+% 学分信息
+\textbf{Credits:} \CourseCredits \quad 
+\textbf{Format:} \CourseFormat \quad 
+\textbf{Location:} \CourseLocation
+\vspace{1cm}
+
+% 教师信息 - 支持多个教师
+\subsectiontitle{Instructors}
+\CourseInstructorsList
+
+\vfill
+\CourseDate
+\end{titlepage}
+
+% 课程描述
+\sectiontitle{Course Description}
+\CourseDescription
+
+% 参与者
+\sectiontitle{Participants}
+\begin{itemize}
+\CourseParticipants
+\end{itemize}
+
+% 教师信息
+\sectiontitle{Instructors}
+\begin{itemize}
+\CourseInstructors
+\end{itemize}
+
+% 德语课程等价
+\sectiontitle{German Course Equivalent}
+\CourseGermanEquivalent
+
+% 课程格式
+\sectiontitle{Format}
+\begin{itemize}
+\CourseFormatDetails
+\end{itemize}
+
+% 课程安排
+\sectiontitle{Schedule}
+
+\subsectiontitle{Overview}
+
+This seminar is planned to be held \MaxScheduleEntries times. The table below lists the schedule and content for each session. It will be adjusted flexibly as the course progresses.
+
+% 从CSV文件读取课程安排
+\begin{center}
+\footnotesize
+\setlength{\extrarowheight}{2pt}  % 减少表格行高
+\begin{longtable}{p{2.5cm} p{3cm} p{5cm} p{4cm}}
+\toprule
+\textbf{Date} & \textbf{Time} & \textbf{Topic} & \textbf{Readings / Assignments} \\
+\midrule
+\csvreader[
+  head to column names,
+  late after line=\\,
+  range={1-\MaxScheduleEntries}
+]{course_schedule.csv}{
+  date=\colA, time=\colB, topic=\colC, readings=\colD
+}{
+  \colA & \colB & \colC & \colD
+}
+\bottomrule
+\end{longtable}
+\end{center}
+
+\newpage
+\input{chapters/lecture1.tex}
+
+% 推荐资源
+\sectiontitle{Reference \& Additional Resources}
+
+\subsectiontitle{Papers and Books}
+% 临时调整参考文献列表间距
+\setlength{\bibitemsep}{3pt}
+\setlength{\bibparsep}{3pt}
+\printbibliography[title={},heading=none]
+
+\subsectiontitle{Websites, Wikis, Docs}
+
+\begin{itemize}
+\item Mesa: Agent Based Modelling in Python. \href{https://mesa.readthedocs.io/latest/}{https://mesa.readthedocs.io/latest/}
+\item NetLogo \href{https://www.netlogo.org/}{https://www.netlogo.org/}
+\item GIS Agents \href{https://www.gisagents.org/}{https://www.gisagents.org/}
+\end{itemize}
+
+\end{document}
