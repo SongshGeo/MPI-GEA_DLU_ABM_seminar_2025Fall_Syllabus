@@ -1,146 +1,217 @@
-# Pandoc Cover Letter Template
+# Agent-Based Modeling Seminar 2025 Fall
 
-这个模板允许你使用Markdown编写推荐信正文，然后通过Pandoc自动生成LaTeX和PDF文件。
+This repository contains the LaTeX source files for the "Agent-Based Modeling for Urban and Archaeological Studies" seminar course materials, offered at the Max Planck Institute of Geoanthropology (MPI-GEA), Department of Coevolution of Landuse and Urbanisation (DLU).
 
-## 文件结构
+## Course Information
+
+- **Course Title**: Agent-Based Modeling for Urban and Archaeological Studies
+- **Course Code**: ABM-2025
+- **Semester**: Winter Semester 2025
+- **Credits**: 3 ECTS
+- **Format**: In-person and Virtual (DLU, Zoom)
+- **Instructors**: 
+  - Chris Carleton ([carleton@gea.mpg.de](mailto:carleton@gea.mpg.de))
+  - Song Shuang ([song@gea.mpg.de](mailto:song@gea.mpg.de))
+
+## Repository Structure
 
 ```
-├── cover_letter_template.latex    # Pandoc LaTeX模板
-├── cover_letter_content.md        # Markdown内容文件
-├── pandoc_config.yaml            # Pandoc配置文件
-├── Makefile                      # 自动化构建脚本
-├── config.tex                    # LaTeX配置文件
-├── data.csv                      # 审稿人数据
-└── imgs/                         # 图片文件夹
+├── MPI-GEA_DLU_ABM_seminar_2025Fall.tex  # Main LaTeX document
+├── course_config.tex                     # Course configuration file
+├── course_schedule.csv                   # Course schedule data
+├── course_bibliography.bib               # Main bibliography file
+├── chapters/                             # Lecture content
+│   └── lecture1.tex                      # First lecture materials
+├── refer/                                # Additional references
+│   └── lecture1.bib                      # Lecture-specific bibliography
+├── imgs/                                 # Image assets
+│   ├── MPI-GEA_logo.pdf                 # Institution logo
+│   ├── bnu_logo.png                     # Partner institution logo
+│   └── Song_signature.png               # Signature file
+├── QUICK_START.md                        # Quick start guide
+└── README.md                             # This file
 ```
 
-## 使用方法
+## Quick Start
 
-### 方法1: 使用Makefile（推荐）
+### Prerequisites
+
+Make sure you have the following installed:
+- LaTeX distribution (TeX Live, MiKTeX, or MacTeX)
+- BibLaTeX with Biber backend
+- Required LaTeX packages:
+  - `csvsimple` - for CSV data processing
+  - `biblatex` - for bibliography management
+  - `booktabs` - for professional tables
+  - `longtable` - for multi-page tables
+  - `geometry` - for page layout
+  - `hyperref` - for hyperlinks
+  - Other standard packages (see main `.tex` file)
+
+### Compilation
+
+To compile the course syllabus PDF:
 
 ```bash
-# 生成PDF
-make pdf
+# Compile with pdflatex
+pdflatex MPI-GEA_DLU_ABM_seminar_2025Fall.tex
 
-# 生成LaTeX文件
-make tex
+# Process bibliography
+biber MPI-GEA_DLU_ABM_seminar_2025Fall
 
-# 清理生成的文件
-make clean
-
-# 查看帮助
-make help
+# Compile again to resolve references
+pdflatex MPI-GEA_DLU_ABM_seminar_2025Fall.tex
+pdflatex MPI-GEA_DLU_ABM_seminar_2025Fall.tex
 ```
 
-### 方法2: 直接使用Pandoc命令
+Or use your LaTeX editor's build system (Overleaf, TeXShop, TeXstudio, etc.).
 
-```bash
-# 生成PDF
-pandoc cover_letter_content.md \
-    --template=cover_letter_template.latex \
-    --pdf-engine=pdflatex \
-    --output=cover_letter_output.pdf \
-    --variable=MaxReviewers=5
+## Customization
 
-# 生成LaTeX文件
-pandoc cover_letter_content.md \
-    --template=cover_letter_template.latex \
-    --output=cover_letter_output.tex \
-    --variable=MaxReviewers=5
-```
+### 1. Modify Course Information
 
-## 自定义内容
+Edit the `course_config.tex` file to update:
+- Course title, code, and semester
+- Instructor information
+- Institution details
+- Logo paths
+- Course description
 
-### 1. 修改推荐信正文
-
-编辑 `cover_letter_content.md` 文件，使用Markdown语法编写你的推荐信正文：
-
-```markdown
-# Cover Letter Content
-
-## Abstract and Contribution
-
-你的论文摘要和贡献...
-
-### Key Findings
-
-主要发现...
-
-### Research Significance
-
-研究意义...
-```
-
-### 2. 修改个人信息
-
-编辑 `config.tex` 文件来修改个人信息：
-
+Example:
 ```latex
-% 个人信息
-\newcommand{\AuthorName}{Your Name}
-\newcommand{\AuthorEmail}{your.email@example.com}
-% ... 其他信息
+% Basic course information
+\newcommand{\CourseTitle}{Your Course Title}
+\newcommand{\CourseCode}{COURSE-CODE}
+\newcommand{\CourseSemester}{Fall 2025}
 ```
 
-### 3. 修改审稿人数据
+### 2. Update Course Schedule
 
-编辑 `data.csv` 文件来修改推荐的审稿人：
+Edit the `course_schedule.csv` file to modify the schedule:
 
 ```csv
-reviewer,email,reason
-John Doe,john.doe@university.edu,Expert in water governance
-Jane Smith,jane.smith@institute.edu,Climate change specialist
+date,time,topic,readings
+13.10.2025,13:00 - 14:30,Introduction to ABM with case study,Reading 1
+27.10.2025,13:00 - 14:30,Building NetLogo Models,Reading 2
+...
 ```
 
-### 4. 调整显示行数
+The table automatically formats and displays in the final PDF.
 
-在生成时使用 `--variable=MaxReviewers=N` 参数来调整显示的审稿人数量：
+### 3. Manage References
 
+Add references to:
+- `course_bibliography.bib` - Main course bibliography
+- `refer/lecture1.bib` - Lecture-specific references
+- Additional `.bib` files as needed (update the `\addbibresource{}` commands in main `.tex` file)
+
+### 4. Add Lecture Content
+
+Create new lecture files in the `chapters/` directory:
+```latex
+% chapters/lecture2.tex
+\newpage
+\sectiontitle{Lecture 2: Advanced Topics}
+\subsectiontitle{Introduction}
+Your content here...
+```
+
+Then include them in the main document:
+```latex
+\input{chapters/lecture2.tex}
+```
+
+### 5. Control Schedule Display
+
+Adjust the number of schedule entries shown by modifying in `course_config.tex`:
+```latex
+\newcommand{\MaxScheduleEntries}{8}  % Show first 8 entries
+```
+
+## Document Sections
+
+The generated syllabus includes:
+
+1. **Title Page** - Course title, institution logo, instructor information
+2. **Course Description** - Overview of the course content and objectives
+3. **Participants** - Target audience
+4. **Instructors** - Contact information for all instructors
+5. **German Course Equivalent** - German credit system equivalence
+6. **Format** - Course delivery format details
+7. **Schedule** - Automatically generated from CSV file
+8. **Lecture Content** - Individual lecture materials (chapters)
+9. **References & Additional Resources** - Bibliography and web resources
+
+## Multiple Instructors Support
+
+This template supports multiple instructors. Configure them in `course_config.tex`:
+
+```latex
+% For the title page (detailed information)
+\newcommand{\CourseInstructorsList}{%
+\textbf{Instructor One}\\
+Institution Name\\
+Address\\
+\textbf{Email:} email1@domain.com\\[0.5cm]
+\textbf{Instructor Two}\\
+Institution Name\\
+Address\\
+\textbf{Email:} email2@domain.com
+}
+
+% For the instructors list (brief format)
+\newcommand{\CourseInstructors}{%
+\item Instructor One (\href{mailto:email1@domain.com}{email1@domain.com})
+\item Instructor Two (\href{mailto:email2@domain.com}{email2@domain.com})
+}
+```
+
+## Additional Resources
+
+The syllabus includes links to relevant ABM resources:
+- Mesa: Agent Based Modelling in Python - https://mesa.readthedocs.io/latest/
+- NetLogo - https://www.netlogo.org/
+- GIS Agents - https://www.gisagents.org/
+
+## Troubleshooting
+
+### Bibliography not showing
+Run Biber after the first pdflatex compilation:
 ```bash
-pandoc cover_letter_content.md --template=cover_letter_template.latex --pdf-engine=pdflatex --output=cover_letter_output.pdf --variable=MaxReviewers=3
+biber MPI-GEA_DLU_ABM_seminar_2025Fall
 ```
 
-## 高级用法
+### Logo not displaying
+- Check that the logo file exists in the `imgs/` folder
+- Verify the path in `course_config.tex` is correct
+- For PDF logos, ensure your LaTeX distribution supports PDF inclusion
 
-### 使用变量覆盖
+### CSV table not rendering
+- Ensure CSV file format is correct (UTF-8 encoding)
+- Check that column names match: `date,time,topic,readings`
+- Verify the `csvsimple` package is installed
 
-你可以在Pandoc命令中直接覆盖配置变量：
+### Compilation errors
+- Ensure all required packages are installed
+- Check for syntax errors in `.tex` files
+- Review the `.log` file for detailed error messages
 
-```bash
-pandoc cover_letter_content.md \
-    --template=cover_letter_template.latex \
-    --pdf-engine=pdflatex \
-    --output=cover_letter_output.pdf \
-    --variable=AuthorName="New Name" \
-    --variable=JournalName="New Journal" \
-    --variable=MaxReviewers=3
-```
+## License
 
-### 批量生成
+See the `LICENSE` file for license information.
 
-你可以创建多个Markdown文件来生成不同版本的推荐信：
+## Contact
 
-```bash
-# 为不同期刊生成推荐信
-pandoc cover_letter_nature.md --template=cover_letter_template.latex --pdf-engine=pdflatex --output=nature_cover_letter.pdf --variable=JournalName="Nature"
-pandoc cover_letter_science.md --template=cover_letter_template.latex --pdf-engine=pdflatex --output=science_cover_letter.pdf --variable=JournalName="Science"
-```
+For questions about the course or this repository:
+- Chris Carleton: [carleton@gea.mpg.de](mailto:carleton@gea.mpg.de)
+- Song Shuang: [song@gea.mpg.de](mailto:song@gea.mpg.de)
 
-## 依赖要求
+## Contributing
 
-- Pandoc (>= 2.0)
-- LaTeX (pdflatex)
-- 所有LaTeX包（moderncv, csvsimple, booktabs等）
+If you find issues or have suggestions for improvements, please contact the instructors.
 
-## 故障排除
+---
 
-如果遇到编译错误，请检查：
-
-1. 所有依赖包是否已安装
-2. 图片文件路径是否正确
-3. CSV文件格式是否正确
-4. LaTeX模板语法是否正确
-
-## 自定义模板
-
-如果你想修改模板样式，可以编辑 `cover_letter_template.latex` 文件。模板中的 `$body$` 占位符会被Markdown内容替换。
+**Max Planck Institute of Geoanthropology**  
+Department of Coevolution of Landuse and Urbanisation  
+Kahlaische Strasse 10, 07745 Jena, Germany
